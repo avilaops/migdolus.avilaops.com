@@ -10,7 +10,7 @@
 ## Argumento de venda (números da bp bioenergy, 3 safras de coleta massal)
 
 | Indicador | Resultado |
-|---|---|
+| --- | --- |
 | Capturas de *Migdolus* | **−94 %** (352 → 21 machos/armadilha) após 3 safras |
 | Larvas no solo | **−87,5 %** (8 → 1 larva/trincheira) |
 | Produtividade (TCH, cana de 4º corte) | **+96 %** (26 → 51 t/ha) vs. área sem controle |
@@ -26,7 +26,7 @@ entre safras para provar o resultado).
 ## Planos (sempre três)
 
 | | **Campo** (entrada) | **Usina** (o que vendemos) | **Grupo** (âncora) |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Armadilhas | até 100 | até 1.000 | ilimitadas |
 | Usuários de campo | 2 | 10 | ilimitados |
 | Fazendas | 1 | 10 | ilimitadas |

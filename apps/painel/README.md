@@ -5,7 +5,7 @@ Painel do escritório / usina em `https://migdolus.avilaops.com`.
 ## Páginas (ordem de entrega)
 
 | Rota | O que mostra |
-|---|---|
+| --- | --- |
 | `/entrar` | Login (mesma API do app) |
 | `/` | Visão geral: armadilhas ativas, septos vencendo, capturas da semana, mapa resumido |
 | `/mapa` | Mapa de calor (MapLibre GL JS): pontos verde/amarelo/vermelho, heatmap ponderado, filtro por fazenda/talhão/período, camada IDW |

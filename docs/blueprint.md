@@ -43,7 +43,7 @@ mapas quanto fazendas sem nenhum histórico cartográfico prévio.
 ## 4. Matriz de funcionalidades
 
 | Módulo | Funcionalidade principal | Benefício prático |
-|---|---|---|
+| --- | --- | --- |
 | GPS nativo | Marcação de ponto no ato da instalação | Dispensa mapas prévios da usina e localiza armadilhas no meio do canavial |
 | Cronômetro de ciclo | Contagem regressiva para troca de feromônio | Evita perda de atratividade da armadilha por esquecimento de prazo |
 | Auditoria visual | Galeria de fotos vinculada ao talhão e data | Comprova o trabalho de campo com transparência para a usina |

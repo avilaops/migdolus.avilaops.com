@@ -1,7 +1,7 @@
 # Roadmap — Migdolus Monitor
 
 | Etapa | Entrega | Critério de pronto |
-|---|---|---|
+| --- | --- | --- |
 | **0. Fundação** | Repositório, esquema PostGIS, docker-compose no Hetzner, DNS `migdolus.avilaops.com` no padrão avilaops.com | `docker compose up` sobe banco + API + painel vazio em produção |
 | **1. App Campo — mínimo de campo** | Cadastro de armadilha com GPS, vistoria com contagem + foto carimbada, SQLite + fila de sync, lista "minhas armadilhas" com dias de septo | Pragueiro trabalha um dia inteiro sem rede e sincroniza à noite |
 | **2. API de sync + painel básico** | `/sync/push`/`/pull`, login, mapa com pontos por status, tabela de armadilhas, status de septo | Escritório vê no mesmo dia o que foi coletado no campo |

@@ -30,7 +30,7 @@ feromônio sempre ativo e dados comparáveis safra a safra. Detalhes em
 O Migdolus Monitor resolve os quatro pontos de uma vez:
 
 | Módulo | Funcionalidade principal | Benefício prático |
-|---|---|---|
+| --- | --- | --- |
 | **GPS nativo** | Marcação automática do ponto na instalação e em cada vistoria | Dispensa mapas prévios da usina e localiza a armadilha no meio do canavial |
 | **Cronômetro de ciclo** | Contagem regressiva para a troca do septo (aviso aos 20 dias, crítico aos 30) | Evita perda de atratividade por esquecimento de prazo |
 | **Auditoria visual** | Foto da bacia com carimbo de data, hora e coordenadas, vinculada ao talhão | Comprova o trabalho de campo com transparência para a usina |
@@ -75,7 +75,7 @@ O Migdolus Monitor resolve os quatro pontos de uma vez:
 ## Decisões de plataforma
 
 | Decisão | Escolha | Motivo |
-|---|---|---|
+| --- | --- | --- |
 | Mobile | **Expo / React Native**, Android primeiro, iOS pelo mesmo código | Celular de campo é Android básico; o mesmo repositório gera o build iOS quando houver demanda (agrônomos/gerência) |
 | Mapa offline | **MapLibre GL Native** com tiles MBTiles baixados por fazenda | Livre de custo por visualização, funciona sem rede |
 | Banco local | **SQLite (expo-sqlite)** com fila de sync | Simples, confiável, sem servidor no aparelho |

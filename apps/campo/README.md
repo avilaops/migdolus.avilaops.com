@@ -6,7 +6,7 @@ código (EAS Build).
 ## Telas (MVP — etapa 1 do roadmap)
 
 | Tela | O que faz |
-|---|---|
+| --- | --- |
 | Login | E-mail/senha → JWT; guarda refresh token; funciona offline após o 1º login |
 | Minhas armadilhas | Lista ordenada por distância, badge de septo (verde/amarelo/vermelho), última contagem |
 | Mapa | MapLibre com tiles offline da fazenda, pontos das armadilhas, bússola/distância até a selecionada |

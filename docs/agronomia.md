@@ -28,7 +28,7 @@
 ## Resultados de referência — bp bioenergy, coleta massal, 3 safras (21/22 → 23/24)
 
 | Indicador | Antes | Depois | Variação |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Machos/armadilha (média da safra) | 352 (21/22) | 156 (22/23) → 21 (23/24) | **−94 %** |
 | Larvas/trincheira | 8 (21/22) | 1 (22/23) | **−87,5 %** |
 | TCH, cana de 4º corte (3º ano de coleta massal) | 26 (testemunha) | 51 (coleta massal) | **+96 %** |

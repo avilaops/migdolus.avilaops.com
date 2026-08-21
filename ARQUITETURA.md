@@ -24,7 +24,7 @@
 ## Modelo de dados (resumo — ver `db/schema.sql`)
 
 | Tabela | Papel |
-|---|---|
+| --- | --- |
 | `organizacao` | Tenant: usina, consultoria ou fazenda independente; parâmetros (dias do septo, faixas de captura) |
 | `usuario` | Pragueiro, agrônomo, gestor (papéis) |
 | `fazenda` | Unidade produtiva; limite opcional (`MultiPolygon`) |

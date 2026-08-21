@@ -5,7 +5,7 @@ Serviço único que atende o app de campo e o painel. Porta padrão `3070`.
 ## Endpoints (MVP)
 
 | Método | Rota | Função |
-|---|---|---|
+| --- | --- | --- |
 | `POST` | `/auth/login` · `/auth/refresh` | JWT curto + refresh |
 | `POST` | `/sync/push` | Lote do aparelho: armadilhas, ciclos, vistorias, fotos (metadados), trincheiras. `UPSERT ON CONFLICT (client_id)` |
 | `GET`  | `/sync/pull?since=` | Tudo que mudou desde o cursor (armadilhas de outros, talhões, malha planejada, parâmetros) |
