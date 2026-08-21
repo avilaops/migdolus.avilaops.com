@@ -1,0 +1,48 @@
+# Migdolus Monitor — stack Docker (Hetzner)
+# Produção: segredos em /etc/avilaops/migdolus.env (chmod 600), fora do repositório.
+# Cloudflare faz só DNS/proxy/CDN; as fotos vão para o R2.
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: migdolus-db
+    restart: unless-stopped
+    env_file: ${ENV_FILE:-../.env}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-migdolus}
+      POSTGRES_USER: ${POSTGRES_USER:-migdolus}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD}
+    volumes:
+      - migdolus-db:/var/lib/postgresql/data
+      - ../db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    ports:
+      - "127.0.0.1:5440:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-migdolus}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ../services/api
+    container_name: migdolus-api
+    restart: unless-stopped
+    env_file: ${ENV_FILE:-../.env}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3070:3070"
+
+  painel:
+    build: ../apps/painel
+    container_name: migdolus-painel
+    restart: unless-stopped
+    env_file: ${ENV_FILE:-../.env}
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:3071:3000"
+
+volumes:
+  migdolus-db:

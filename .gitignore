@@ -1,0 +1,28 @@
+# Dependências
+node_modules/
+.expo/
+.next/
+dist/
+build/
+
+# Segredos — nunca versionar.
+# Em produção o serviço lê /etc/avilaops/migdolus.env, fora da árvore do projeto.
+.env
+.env.*
+!.env.example
+
+# Gerados
+*.tsbuildinfo
+*.log
+npm-debug.log*
+.DS_Store
+
+# Pacotes de mapa offline (gerados por fazenda, pesados)
+*.mbtiles
+
+# Builds nativos
+*.apk
+*.aab
+*.ipa
+android/
+ios/
