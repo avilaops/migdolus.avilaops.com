@@ -12,6 +12,9 @@ Hetzner, porta 3070 atrás do Caddy). A **API do app de campo vive aqui**, em
 | `/` | Visão geral: KPIs (ativas, septo vencido, adultos 7/30 d), capturas por semana (Recharts), troca de septo, últimas vistorias |
 | `/mapa` | Mapa de calor (MapLibre GL JS, satélite Esri): pontos por nível de infestação, borda pelo septo, heatmap ponderado, filtro por fazenda e período, painel lateral da armadilha |
 | `/armadilhas` | Tabela com status de septo, vence em, última vistoria, contagem, nível, coordenadas; filtros por faixa/fazenda e busca |
+| `/armadilhas/[id]` | Detalhe: evolução das capturas, ciclos de septo, **galeria de fotos carimbadas** (auditoria), tabela de vistorias |
+| `/safras` | Curva de revoada por safra, machos/armadilha por safra, % de queda, larvas/trincheira, **TCH por talhão** (tratado × testemunha) |
+| `/relatorios` · `/laudo` | Laudo técnico por fazenda/período pronto para imprimir/salvar em PDF: resumo, mapa de calor, tabela por talhão, evolução semanal, septos, fotos |
 | `/talhoes` | Fazendas e talhões: **desenhar polígono no mapa** ou **importar GeoJSON/KML**, área em ha, **gerar malha de armadilhas** (30 m, `gerar_malha()` no PostGIS) → pontos `planejados` que aparecem no app |
 | `/configuracoes` | Parâmetros agronômicos (dias do septo, aviso, malha, faixas), usuários (criar, ativar/desativar, redefinir senha), instruções do app |
 
@@ -34,6 +37,8 @@ colapsável, Card, Table, Dialog, Tabs, Select, Switch, Sonner. Componentes do
 | `POST` | `/api/talhoes/:id/malha` | Gera armadilhas planejadas (espaçamento, prefixo, finalidade) |
 | `GET/POST/PATCH` | `/api/usuarios` | Gestão de usuários (admin/gestor) |
 | `GET/PATCH` | `/api/configuracoes` | Parâmetros da organização |
+| `GET/POST/DELETE` | `/api/safras` | Safras (rótulo, início, fim) |
+| `GET/POST` | `/api/producao` | TCH por talhão/safra (upsert) e trincheiras lançadas pelo escritório |
 | `GET` | `/api/resumo` | KPIs da visão geral |
 
 Autenticação: `src/lib/auth.ts` (jose + bcryptjs); `src/proxy.ts` protege as

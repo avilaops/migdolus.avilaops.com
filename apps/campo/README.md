@@ -19,6 +19,9 @@ Código completo e tipado (`npm run typecheck` limpo, `expo-doctor` 21/21).
 | `armadilha/nova` | Instalar: GPS automático (aguarda ≤ 10 m por 15 s), fazenda/talhão, código sugerido, finalidade, lote do septo, foto carimbada; ou **confirmar ponto planejado** (`?planejada=<id>`) |
 | `armadilha/[id]` | Localizador (distância + seta de rumo), última contagem, dias do septo, histórico, galeria de fotos, abrir no app de mapas |
 | `vistoria/[armadilhaId]` | Teclado numérico, densidade adultos/armadilha/dia, toggle de troca de septo (sugerido quando vencendo), observações, foto da bacia com carimbo |
+| `trincheira/nova` | Larvas por trincheira (talhão, contagem, GPS opcional) — sobe no mesmo lote de sync |
+
+Recursos sem tela: **avisos locais** de troca de septo (20/30 dias, agrupados por dia, reagendados a cada sync) e **mapa offline por fazenda**.
 
 ## Como funciona por dentro
 
