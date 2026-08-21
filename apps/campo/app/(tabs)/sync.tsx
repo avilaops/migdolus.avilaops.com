@@ -4,6 +4,7 @@ import { useFocusEffect } from "expo-router";
 import { contarPendentes, lerConfig, listarArmadilhas, listarFazendas, pendentes, type ItemOutbox } from "../../src/db";
 import { sincronizar, temRede, type ResultadoSync } from "../../src/sync";
 import { useSessao } from "../../src/sessao";
+import { agendarAvisosSepto } from "../../src/notificacoes";
 import { Botao, Cartao, s as ui, Suave, Titulo } from "../../src/ui";
 import { CORES } from "../../src/config";
 
@@ -29,6 +30,7 @@ export default function Sync() {
     try {
       const r = await sincronizar(deviceId, setMsg);
       setResultado(r);
+      agendarAvisosSepto();
     } finally {
       setOcupado(false); setMsg(null);
       carregar();

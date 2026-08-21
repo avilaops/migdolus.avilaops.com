@@ -105,7 +105,7 @@ export default async function ArmadilhasPage({ searchParams }: PageProps<"/armad
                 {filtradas.map((a) => (
                   <TableRow key={a.id}>
                     <TableCell className="font-medium">
-                      {a.codigo}
+                      <Link href={`/armadilhas/${a.id}`} className="hover:underline text-marca-escura">{a.codigo}</Link>
                       {a.status === "planejada" && <Badge variant="outline" className="ml-2">planejada</Badge>}
                       {a.status === "perdida" && <Badge variant="destructive" className="ml-2">perdida</Badge>}
                     </TableCell>

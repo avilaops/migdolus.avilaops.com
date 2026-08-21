@@ -174,3 +174,11 @@ body {
     @apply font-sans;
   }
 }
+/* Laudo impresso */
+@media print {
+  .no-print { display: none !important; }
+  .avoid-break { break-inside: avoid; }
+  body { background: #fff; }
+  .laudo { max-width: none; }
+  @page { size: A4; margin: 14mm; }
+}

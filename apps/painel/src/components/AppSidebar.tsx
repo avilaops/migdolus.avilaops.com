@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Flame, MapPin, Map as MapIcon, Settings2, LogOut } from "lucide-react";
+import { LayoutDashboard, Flame, MapPin, Map as MapIcon, Settings2, LogOut, TrendingDown, FileText } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem,
@@ -14,6 +14,8 @@ const ITENS = [
   { href: "/mapa", rotulo: "Mapa de calor", Icone: Flame },
   { href: "/armadilhas", rotulo: "Armadilhas", Icone: MapPin },
   { href: "/talhoes", rotulo: "Fazendas e talhões", Icone: MapIcon },
+  { href: "/safras", rotulo: "Safras e resultados", Icone: TrendingDown },
+  { href: "/relatorios", rotulo: "Relatórios", Icone: FileText },
 ];
 
 export function AppSidebar({ nome, papel }: { nome: string; papel: string }) {

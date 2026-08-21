@@ -54,16 +54,28 @@ export default function Mapa() {
     if (id) setSelecionada(armadilhas.find((a) => a.id === id) ?? null);
   }
 
-  async function baixarOffline() {
+  function baixarOffline() {
     if (!armadilhas.length && !talhoes.features.length) { Alert.alert("Mapa offline", "Sincronize primeiro para ter armadilhas ou talhões e definir a área."); return; }
+    if (fazendas.length <= 1) { baixarFazenda(fazendas[0] ?? null); return; }
+    Alert.alert("Qual fazenda baixar?", "Baixe uma por vez pelo Wi-Fi — cada pacote cobre a área dos talhões e armadilhas da fazenda.", [
+      ...fazendas.slice(0, 6).map((f) => ({ text: f.nome, onPress: () => baixarFazenda(f) })),
+      { text: "Cancelar", style: "cancel" as const },
+    ]);
+  }
+
+  async function baixarFazenda(fz: Fazenda | null) {
+    const talhoesIds = new Set((await listarTalhoes(fz?.id)).map((t) => t.id));
+    const arms = fz ? armadilhas.filter((a) => a.fazenda_id === fz.id) : armadilhas;
+    const polys = fz ? talhoes.features.filter((f) => talhoesIds.has(String(f.properties?.id))) : talhoes.features;
     const coords: [number, number][] = [
-      ...armadilhas.map((a) => [a.lon, a.lat] as [number, number]),
-      ...talhoes.features.flatMap((f) => (f.geometry.type === "Polygon" ? f.geometry.coordinates.flat() : f.geometry.type === "MultiPolygon" ? f.geometry.coordinates.flat(2) : []) as [number, number][]),
+      ...arms.map((a) => [a.lon, a.lat] as [number, number]),
+      ...polys.flatMap((f) => (f.geometry.type === "Polygon" ? f.geometry.coordinates.flat() : f.geometry.type === "MultiPolygon" ? f.geometry.coordinates.flat(2) : []) as [number, number][]),
     ];
+    if (!coords.length) { Alert.alert("Mapa offline", "Esta fazenda ainda não tem armadilhas nem talhões para definir a área."); return; }
     const lons = coords.map((c) => c[0]), lats = coords.map((c) => c[1]);
     const margem = 0.01; // ~1 km
     const bounds: [number, number, number, number] = [Math.min(...lons) - margem, Math.min(...lats) - margem, Math.max(...lons) + margem, Math.max(...lats) + margem];
-    const nome = `fazenda-${fazendas[0]?.id.slice(0, 8) ?? "area"}`;
+    const nome = `fazenda-${fz?.id.slice(0, 8) ?? "area"}`;
     try {
       setBaixando("0%");
       try { await OfflineManager.deletePack(nome); } catch { /* não existia */ }
@@ -98,7 +110,7 @@ export default function Mapa() {
 
       <View style={st.acoes}>
         <Pressable onPress={baixarOffline} disabled={!!baixando} style={st.acao}>
-          <Text style={st.acaoTxt}>{baixando ? `Baixando ${baixando}` : pacotes.length ? "Atualizar mapa offline" : "Baixar mapa offline"}</Text>
+          <Text style={st.acaoTxt}>{baixando ? `Baixando ${baixando}` : pacotes.length ? `Mapa offline (${pacotes.length}) · atualizar` : "Baixar mapa offline"}</Text>
         </Pressable>
         <Pressable onPress={() => router.push("/armadilha/nova")} style={[st.acao, { backgroundColor: CORES.marca }]}>
           <Text style={[st.acaoTxt, { color: "#fff" }]}>+ Instalar aqui</Text>

@@ -31,6 +31,7 @@ function Portao() {
       <Stack.Screen name="armadilha/nova" options={{ title: "Instalar armadilha" }} />
       <Stack.Screen name="armadilha/[id]" options={{ title: "Armadilha" }} />
       <Stack.Screen name="vistoria/[armadilhaId]" options={{ title: "Vistoria", presentation: "modal" }} />
+      <Stack.Screen name="trincheira/nova" options={{ title: "Trincheira" }} />
     </Stack>
   );
 }

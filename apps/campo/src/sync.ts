@@ -2,7 +2,7 @@ import * as Network from "expo-network";
 import { api, ErroApi } from "./api";
 import {
   abrir, aplicarPull, concluirOutbox, gravarConfig, lerConfig, marcarErroOutbox, pendentes,
-  type Armadilha, type Ciclo, type Foto, type ItemOutbox, type PullArmadilha, type Vistoria, type Fazenda,
+  type Armadilha, type Ciclo, type Foto, type ItemOutbox, type PullArmadilha, type Vistoria, type Fazenda, type Trincheira,
 } from "./db";
 
 export interface ResultadoSync {
@@ -120,6 +120,13 @@ async function montarLote(itens: ItemOutbox[], deviceId: string) {
       if (!c) continue;
       const a = await d.getFirstAsync<{ id_servidor: string | null }>(`SELECT id_servidor FROM armadilha WHERE id = ?`, [c.armadilha_id]);
       lote.ciclos.push({ client_id: c.id, armadilha_client_id: c.armadilha_id, armadilha_id: a?.id_servidor ?? null, lote_septo: c.lote_septo, inicio: c.inicio, trocado_em: c.trocado_em });
+    } else if (it.tipo === "trincheira") {
+      const t = await d.getFirstAsync<Trincheira>(`SELECT * FROM trincheira WHERE id = ?`, [it.ref_id]);
+      if (!t) continue;
+      lote.trincheiras.push({
+        client_id: t.id, talhao_id: t.talhao_id, realizada_em: t.realizada_em, larvas: t.larvas,
+        ponto: t.lat !== null && t.lon !== null ? { lat: t.lat, lon: t.lon } : null, observacoes: t.observacoes,
+      });
     } else if (it.tipo === "vistoria") {
       const v = await d.getFirstAsync<Vistoria>(`SELECT * FROM vistoria WHERE id = ?`, [it.ref_id]);
       if (!v) continue;

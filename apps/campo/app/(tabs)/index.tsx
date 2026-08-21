@@ -6,6 +6,7 @@ import { contarPendentes, lerConfig, listarArmadilhas, parametros, type Armadilh
 import { distanciaM, formatarDistancia } from "../../src/gps";
 import { BadgeSepto, COR_NIVEL, faixaSepto, nivelInfestacao, s as ui, Suave } from "../../src/ui";
 import { CORES } from "../../src/config";
+import { agendarAvisosSepto } from "../../src/notificacoes";
 
 type Filtro = "todas" | "vencendo" | "planejadas";
 
@@ -25,6 +26,7 @@ export default function Armadilhas() {
     const [a, par, c, us] = await Promise.all([listarArmadilhas(), parametros(), contarPendentes(), lerConfig("ultima_sync")]);
     setLista(a); setP(par); setPend(c.total); setUltimaSync(us);
     setAtualizando(false);
+    agendarAvisosSepto();
   }, []);
 
   useFocusEffect(useCallback(() => { carregar(); }, [carregar]));
@@ -64,6 +66,7 @@ export default function Armadilhas() {
       <View style={st.topo}>
         <TextInput value={busca} onChangeText={setBusca} placeholder="Buscar código…" placeholderTextColor="#9aa79f" style={[ui.campo, { flex: 1 }]} autoCapitalize="characters" />
         <Pressable onPress={() => router.push("/armadilha/nova")} style={st.novo}><Text style={st.novoTxt}>+ Instalar</Text></Pressable>
+        <Pressable onPress={() => router.push("/trincheira/nova")} style={[st.novo, { backgroundColor: CORES.superficie, borderWidth: 1, borderColor: CORES.borda }]}><Text style={[st.novoTxt, { color: CORES.texto }]}>Larvas</Text></Pressable>
       </View>
       <View style={st.filtros}>
         <Chip ativo={filtro === "todas"} onPress={() => setFiltro("todas")} rotulo={`Todas (${lista.length})`} />

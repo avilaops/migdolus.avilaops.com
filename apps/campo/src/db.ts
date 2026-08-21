@@ -97,6 +97,10 @@ export async function abrir(): Promise<SQLite.SQLiteDatabase> {
       id TEXT PRIMARY KEY, vistoria_id TEXT, armadilha_id TEXT, uri TEXT NOT NULL, tirada_em TEXT NOT NULL,
       lat REAL, lon REAL, enviada INTEGER NOT NULL DEFAULT 0
     );
+    CREATE TABLE IF NOT EXISTS trincheira (
+      id TEXT PRIMARY KEY, talhao_id TEXT NOT NULL, realizada_em TEXT NOT NULL, larvas INTEGER NOT NULL,
+      lat REAL, lon REAL, observacoes TEXT
+    );
     CREATE TABLE IF NOT EXISTS outbox (
       seq INTEGER PRIMARY KEY AUTOINCREMENT, tipo TEXT NOT NULL, ref_id TEXT NOT NULL, criado_em TEXT NOT NULL,
       tentativas INTEGER NOT NULL DEFAULT 0, erro TEXT
@@ -232,7 +236,8 @@ export async function fotosDaArmadilha(armadilhaId: string): Promise<Foto[]> {
 }
 
 // ---- outbox ----
-export interface ItemOutbox { seq: number; tipo: "armadilha" | "ciclo" | "vistoria" | "foto"; ref_id: string; criado_em: string; tentativas: number; erro: string | null }
+export interface ItemOutbox { seq: number; tipo: "armadilha" | "ciclo" | "vistoria" | "foto" | "trincheira"; ref_id: string; criado_em: string; tentativas: number; erro: string | null }
+export interface Trincheira { id: string; talhao_id: string; realizada_em: string; larvas: number; lat: number | null; lon: number | null; observacoes: string | null }
 export async function pendentes(): Promise<ItemOutbox[]> {
   const d = await abrir();
   return d.getAllAsync<ItemOutbox>(`SELECT * FROM outbox ORDER BY seq`);
