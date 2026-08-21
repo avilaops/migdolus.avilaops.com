@@ -1,48 +1,39 @@
-# Migdolus Monitor — stack Docker (Hetzner)
-# Produção: segredos em /etc/avilaops/migdolus.env (chmod 600), fora do repositório.
-# Cloudflare faz só DNS/proxy/CDN; as fotos vão para o R2.
+# Migdolus Monitor — stack Docker no Hetzner (/opt/migdolus/docker-compose.yml)
+#
+# O banco NÃO roda em container: usa o Postgres 18 do host (PostGIS instalado por
+# deploy/setup-db.sh), que escuta em 172.17.0.1:5432 para os containers. Isso
+# poupa RAM e disco no CX23. Segredos em /etc/avilaops/migdolus.env (chmod 600).
+#
+# A imagem é buildada na máquina local (o servidor não aguenta `next build`):
+#   docker build --platform linux/amd64 -t migdolus-painel:latest apps/painel
+#   docker save migdolus-painel:latest | gzip -1 | ssh root@178.105.82.48 'gunzip | docker load'
+#   ssh root@178.105.82.48 'cd /opt/migdolus && docker compose up -d'
 
 services:
-  db:
-    image: postgis/postgis:16-3.4
-    container_name: migdolus-db
-    restart: unless-stopped
-    env_file: ${ENV_FILE:-../.env}
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-migdolus}
-      POSTGRES_USER: ${POSTGRES_USER:-migdolus}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD}
-    volumes:
-      - migdolus-db:/var/lib/postgresql/data
-      - ../db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-    ports:
-      - "127.0.0.1:5440:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-migdolus}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  api:
-    build: ../services/api
-    container_name: migdolus-api
-    restart: unless-stopped
-    env_file: ${ENV_FILE:-../.env}
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "127.0.0.1:3070:3070"
-
   painel:
-    build: ../apps/painel
+    image: migdolus-painel:latest
     container_name: migdolus-painel
     restart: unless-stopped
-    env_file: ${ENV_FILE:-../.env}
-    depends_on:
-      - api
+    env_file: /etc/avilaops/migdolus.env
+    environment:
+      FOTOS_DIR: /data/fotos
     ports:
-      - "127.0.0.1:3071:3000"
+      - "127.0.0.1:3070:3000"
+    volumes:
+      - migdolus-fotos:/data/fotos
+    # Bridge padrão do Docker (172.17.0.x): o Postgres do host escuta em 172.17.0.1
+    # e o pg_hba/ufw liberam 172.16.0.0/12. Redes criadas pelo compose podem cair
+    # em 192.168.x e ficar bloqueadas — por isso não usamos a rede própria.
+    network_mode: bridge
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/entrar"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 400m
 
 volumes:
-  migdolus-db:
+  migdolus-fotos:

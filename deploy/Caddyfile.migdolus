@@ -1,0 +1,8 @@
+# Migdolus Monitor — painel + API (container migdolus-painel, 127.0.0.1:3070)
+migdolus.avilaops.com {
+	encode zstd gzip
+	request_body {
+		max_size 20MB
+	}
+	reverse_proxy 127.0.0.1:3070
+}

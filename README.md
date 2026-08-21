@@ -36,6 +36,16 @@ O Migdolus Monitor resolve os quatro pontos de uma vez:
 | **Auditoria visual** | Foto da bacia com carimbo de data, hora e coordenadas, vinculada ao talhão | Comprova o trabalho de campo com transparência para a usina |
 | **Estatística espacial** | Média, densidade e interpolação (IDW/kriging) por talhão e fazenda | Elimina o lançamento manual no Excel e gera o mapa de calor sozinho |
 
+## Estado atual (21/08/2026)
+
+| Peça | Status |
+| --- | --- |
+| Painel + API | **No ar** em <https://migdolus.avilaops.com> (Hetzner, Docker, Caddy, DNS-only) |
+| Banco | Postgres 18 + PostGIS 3.6 do host, banco `migdolus`, esquema aplicado |
+| Organização piloto | "Avila Ops — Piloto Migdolus", admin `nicolas@avilaops.com` |
+| App de campo | Código completo (Expo SDK 57), typecheck e expo-doctor limpos; **APK ainda não gerado** |
+| Alertas n8n, laudo PDF, R2, IDW | Etapa 5 — pendentes |
+
 ## Módulos
 
 ### 1. App Campo (mobile, offline-first)
@@ -79,7 +89,7 @@ O Migdolus Monitor resolve os quatro pontos de uma vez:
 | Mobile | **Expo / React Native**, Android primeiro, iOS pelo mesmo código | Celular de campo é Android básico; o mesmo repositório gera o build iOS quando houver demanda (agrônomos/gerência) |
 | Mapa offline | **MapLibre GL Native** com tiles MBTiles baixados por fazenda | Livre de custo por visualização, funciona sem rede |
 | Banco local | **SQLite (expo-sqlite)** com fila de sync | Simples, confiável, sem servidor no aparelho |
-| Backend | **Node + TypeScript (Fastify)** + **Prisma/PostGIS** | Mesma linguagem do restante do workspace |
+| Backend | **Route handlers do Next.js** + `pg` + PostGIS (API dentro do painel) | Um só processo Node no CX23 de 4 GB; extraível para serviço próprio depois |
 | Painel | **Next.js** + MapLibre GL JS + Recharts | Padrão dos demais sites da Avila Ops |
 | PDF | Renderização server-side (Playwright) do mesmo componente do painel | Um único layout para tela e laudo |
 | Hospedagem | Docker no **Hetzner**, Cloudflare só DNS/proxy/CDN/R2 | Padrão do workspace |
@@ -102,27 +112,21 @@ migdolus.avilaops.com/
 │   ├── blueprint.md     ← blueprint original do cliente (v2, com GPS e contador de dias)
 │   └── agronomia.md     ← referência técnica do Migdolus e das armadilhas
 ├── apps/
-│   ├── campo/           ← app mobile (Expo)
-│   └── painel/          ← painel web (Next.js)
-├── services/
-│   └── api/             ← API de sincronização e relatórios (Fastify + Prisma)
+│   ├── campo/           ← app mobile (Expo SDK 57 + MapLibre + SQLite)
+│   └── painel/          ← painel web **e API** (Next.js 16, route handlers em src/app/api)
 ├── db/
 │   └── schema.sql       ← esquema PostGIS inicial
 ├── n8n/                 ← fluxos (alerta de septo, laudo, prospecção)
-└── deploy/              ← docker-compose e configuração do Hetzner
+└── deploy/              ← docker-compose, Caddyfile, setup-db.sh, deploy.sh, cloudflare-dns.mjs
 ```
 
 ## Como começar (dev)
 
 ```bash
-# banco local com PostGIS
-docker compose -f deploy/docker-compose.yml up -d db
+# banco local com PostGIS (qualquer Postgres 16+ com a extensão)
 psql "$DATABASE_URL" -f db/schema.sql
 
-# API
-cd services/api && npm i && npm run dev
-
-# painel
+# painel + API
 cd apps/painel && npm i && npm run dev
 
 # app de campo

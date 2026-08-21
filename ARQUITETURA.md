@@ -4,7 +4,7 @@
 
 ```text
 ┌──────────────────────┐     HTTPS (lote, idempotente)     ┌──────────────────────┐
-│  App Campo (Expo)    │ ───────────────────────────────►  │  API (Fastify/TS)    │
+│  App Campo (Expo)    │ ───────────────────────────────►  │  API (Next handlers) │
 │  • SQLite local      │ ◄───────────────────────────────  │  • /sync/push /pull  │
 │  • fila de sync      │        pull incremental           │  • /relatorios/pdf   │
 │  • GPS + câmera      │                                   │  • /alertas          │
