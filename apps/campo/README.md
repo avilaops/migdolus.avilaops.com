@@ -42,9 +42,21 @@ npm run typecheck
 
 ## Build de campo (APK)
 
+**Local (sem EAS), como foi feito em 21/08/2026** — máquina Windows com Android SDK em
+`C:\devndroid-sdk` e JDK 17 em `C:\dev\jdk17`:
+
 ```bash
-npx eas init                                  # grava o projectId em app.json
-eas build -p android --profile preview        # APK para instalar direto
+npx expo prebuild -p android --no-install       # gera android/ (está no .gitignore)
+# Windows: o CMake estoura MAX_PATH (260) com o caminho D:vilaops.com\...; use um junction curto
+cmd /c mklink /J C:\mc D:vilaops.com\migdolus.avilaops.compps\campo
+cd C:\mcndroid && gradlew.bat assembleRelease --no-daemon
+# APK: android/app/build/outputs/apk/release/app-release.apk
 ```
 
-`eas.json` já tem os perfis `preview` (APK interno) e `production` (AAB).
+Ajustes já feitos em `android/gradle.properties` (gerado pelo prebuild — refazer após novo prebuild):
+`org.gradle.jvmargs=-Xmx1280m` (8 GB de RAM), `org.gradle.parallel=false`, `org.gradle.workers.max=2`,
+`reactNativeArchitectures=arm64-v8a,x86_64` (campo + emulador; omite armeabi-v7a/x86).
+O MapLibre não roda no Expo Go — precisa deste build (ou `npx expo run:android`).
+
+**EAS (nuvem)**: `npx eas init` + `eas build -p android --profile preview` (`eas.json` já tem
+`preview` = APK interno e `production` = AAB). Precisa de `eas login` interativo.
