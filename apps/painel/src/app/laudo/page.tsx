@@ -14,6 +14,7 @@ export default async function LaudoPage({ searchParams }: PageProps<"/laudo">) {
   const sessao = (await sessaoAtual())!;
   const org = sessao.organizacaoId;
   const fazendaId = typeof sp.fazenda === "string" ? sp.fazenda : "";
+  if (!/^[0-9a-f-]{36}$/i.test(fazendaId)) notFound();
   const de = typeof sp.de === "string" && sp.de ? sp.de : "1970-01-01";
   const ate = typeof sp.ate === "string" && sp.ate ? sp.ate : new Date().toISOString().slice(0, 10);
 

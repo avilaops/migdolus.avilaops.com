@@ -73,7 +73,7 @@ CROSS JOIN LATERAL (
 -- vistorias semanais desde nov/2024 com curva de revoada (pico em março) e queda de ~60 % na 2ª safra
 INSERT INTO vistoria (armadilha_id, usuario_id, realizada_em, adultos, geom, precisao_m, distancia_m, troca_septo, completa)
 SELECT a.id,
-       (SELECT id FROM usuario WHERE email = CASE WHEN random() < 0.6 THEN 'joao.demo@migdolus.avilaops.com' ELSE 'maria.demo@migdolus.avilaops.com' END),
+       (SELECT id FROM usuario WHERE email = CASE WHEN (hashtext(a.id::text || d.dia::text) % 10) < 6 THEN 'joao.demo@migdolus.avilaops.com' ELSE 'maria.demo@migdolus.avilaops.com' END),
        d.dia + ((7 + (random()*8)::int) || ' hours')::interval,
        GREATEST(0, round(
          (CASE EXTRACT(month FROM d.dia)
