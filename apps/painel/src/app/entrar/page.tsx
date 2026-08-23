@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/components/LoginForm";
 
-export const metadata: Metadata = { title: "Entrar" };
+export const metadata: Metadata = { title: { absolute: "Migdolus Monitor" } };
 
 export default async function EntrarPage({ searchParams }: PageProps<"/entrar">) {
   const sp = await searchParams;
