@@ -10,7 +10,7 @@ export default async function VisaoGeral() {
   const org = sessao.organizacaoId;
   const [resumo, vencendo, recentes, semanas] = await Promise.all([
     resumoDaOrganizacao(org),
-    armadilhasComStatus(org, { limite: 8 }).then((r) => r.filter((a) => a.status === "ativa" && a.faixa_septo !== "ok")),
+    armadilhasComStatus(org, { porPagina: 10 }).then((r) => r.linhas.filter((a) => a.status === "ativa" && a.faixa_septo !== "ok").slice(0, 8)),
     vistoriasRecentes(org, 8),
     capturasPorSemana(org, 12),
   ]);

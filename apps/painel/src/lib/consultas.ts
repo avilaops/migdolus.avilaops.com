@@ -79,22 +79,67 @@ export interface ArmadilhaStatus {
   nivel_infestacao: "baixo" | "medio" | "alto" | null;
 }
 
-export async function armadilhasComStatus(org: string, opts: { fazenda?: string | null; faixa?: string | null; limite?: number } = {}) {
-  return query<ArmadilhaStatus>(
-    `SELECT s.id, s.codigo, s.fazenda_id, f.nome AS fazenda, t.nome AS talhao, s.finalidade, s.status,
-            ST_Y(s.geom) AS lat, ST_X(s.geom) AS lon,
-            s.septo_inicio, s.septo_fim_previsto, s.dias_septo, s.faixa_septo,
-            s.ultima_vistoria_em, s.ultima_contagem, s.nivel_infestacao
-       FROM v_armadilha_status s
+export interface PaginaArmadilhas {
+  linhas: ArmadilhaStatus[];
+  total: number;
+  pagina: number;
+  porPagina: number;
+}
+
+/**
+ * Lista paginada no servidor: filtros (fazenda, faixa, busca) e LIMIT/OFFSET no SQL.
+ * A tabela nunca carrega o cadastro inteiro — 1 milhão de armadilhas continua custando uma página.
+ */
+export async function armadilhasComStatus(
+  org: string,
+  opts: { fazenda?: string | null; faixa?: string | null; busca?: string | null; pagina?: number; porPagina?: number } = {},
+): Promise<PaginaArmadilhas> {
+  const porPagina = Math.min(Math.max(opts.porPagina ?? 50, 10), 200);
+  const pagina = Math.max(opts.pagina ?? 1, 1);
+  const busca = opts.busca?.trim() ? `%${opts.busca.trim()}%` : null;
+  const where = `FROM v_armadilha_status s
        JOIN fazenda f ON f.id = s.fazenda_id
        LEFT JOIN talhao t ON t.id = s.talhao_id
       WHERE f.organizacao_id = $1 AND s.status <> 'removida'
         AND ($2::uuid IS NULL OR s.fazenda_id = $2)
         AND ($3::text IS NULL OR s.faixa_septo = $3)
-      ORDER BY CASE s.faixa_septo WHEN 'critico' THEN 0 WHEN 'aviso' THEN 1 WHEN 'sem_septo' THEN 2 ELSE 3 END, s.codigo
-      LIMIT $4`,
-    [org, opts.fazenda ?? null, opts.faixa ?? null, opts.limite ?? 2000],
+        AND ($4::text IS NULL OR s.codigo ILIKE $4 OR t.nome ILIKE $4)`;
+  const params = [org, opts.fazenda ?? null, opts.faixa ?? null, busca];
+  const [linhas, contagem] = await Promise.all([
+    query<ArmadilhaStatus>(
+      `SELECT s.id, s.codigo, s.fazenda_id, f.nome AS fazenda, t.nome AS talhao, s.finalidade, s.status,
+              ST_Y(s.geom) AS lat, ST_X(s.geom) AS lon,
+              s.septo_inicio, s.septo_fim_previsto, s.dias_septo, s.faixa_septo,
+              s.ultima_vistoria_em, s.ultima_contagem, s.nivel_infestacao
+         ${where}
+        ORDER BY CASE s.faixa_septo WHEN 'critico' THEN 0 WHEN 'aviso' THEN 1 WHEN 'sem_septo' THEN 2 ELSE 3 END, s.codigo
+        LIMIT $5 OFFSET $6`,
+      [...params, porPagina, (pagina - 1) * porPagina],
+    ),
+    query<{ total: string }>(`SELECT count(*) AS total ${where}`, params),
+  ]);
+  return { linhas, total: Number(contagem[0]?.total ?? 0), pagina, porPagina };
+}
+
+/** Contadores por status/faixa para os chips da tela (independem da página atual). */
+export async function contagemArmadilhas(org: string, fazenda?: string | null) {
+  const r = await query<{ faixa_septo: string; status: string; n: string }>(
+    `SELECT s.faixa_septo, s.status, count(*) AS n
+       FROM v_armadilha_status s JOIN fazenda f ON f.id = s.fazenda_id
+      WHERE f.organizacao_id = $1 AND s.status <> 'removida' AND ($2::uuid IS NULL OR s.fazenda_id = $2)
+      GROUP BY s.faixa_septo, s.status`,
+    [org, fazenda ?? null],
   );
+  const soma = (fn: (x: { faixa_septo: string; status: string }) => boolean) => r.filter(fn).reduce((acc, x) => acc + Number(x.n), 0);
+  return {
+    total: soma(() => true),
+    ativas: soma((x) => x.status === "ativa"),
+    planejadas: soma((x) => x.status === "planejada"),
+    critico: soma((x) => x.status === "ativa" && x.faixa_septo === "critico"),
+    aviso: soma((x) => x.status === "ativa" && x.faixa_septo === "aviso"),
+    ok: soma((x) => x.status === "ativa" && x.faixa_septo === "ok"),
+    sem_septo: soma((x) => x.status === "ativa" && x.faixa_septo === "sem_septo"),
+  };
 }
 
 export interface VistoriaRecente {
