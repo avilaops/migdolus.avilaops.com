@@ -132,7 +132,7 @@ export function MapaClient({ fazendas }: Props) {
     <div className="flex-1 min-h-[70vh] grid lg:grid-cols-[1fr_320px] gap-4">
       <div className="relative cartao overflow-hidden">
         <div ref={ref} className="absolute inset-0" />
-        <div className="absolute top-3 left-3 flex flex-wrap gap-2 bg-superficie/95 backdrop-blur rounded-lg p-2 shadow text-xs">
+        <div className="absolute top-3 left-3 flex flex-wrap items-center gap-2 bg-superficie/95 backdrop-blur rounded-xl border border-borda p-2.5 shadow-lg text-xs">
           <select value={fazenda} onChange={(e) => setFazenda(e.target.value)} className="campo !w-auto !py-1">
             <option value="">Todas as fazendas</option>
             {fazendas.map((f) => <option key={f.id} value={f.id}>{f.nome}</option>)}
@@ -144,8 +144,8 @@ export function MapaClient({ fazendas }: Props) {
             <input type="checkbox" checked={mostrarCalor} onChange={(e) => setMostrarCalor(e.target.checked)} /> calor
           </label>
         </div>
-        <div className="absolute bottom-6 right-3 bg-superficie/95 backdrop-blur rounded-lg p-3 shadow text-xs space-y-1">
-          <p className="font-medium">Legenda</p>
+        <div className="absolute bottom-6 right-3 bg-superficie/95 backdrop-blur rounded-xl border border-borda p-3 shadow-lg text-xs space-y-1.5">
+          <p className="rotulo !text-[10px]">Legenda</p>
           <p><span className="inline-block h-2.5 w-2.5 rounded-full mr-1.5" style={{ background: COR_NIVEL.baixo }} />Infestação baixa</p>
           <p><span className="inline-block h-2.5 w-2.5 rounded-full mr-1.5" style={{ background: COR_NIVEL.medio }} />Média</p>
           <p><span className="inline-block h-2.5 w-2.5 rounded-full mr-1.5" style={{ background: COR_NIVEL.alto }} />Alta</p>

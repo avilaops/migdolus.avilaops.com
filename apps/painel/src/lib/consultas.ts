@@ -10,6 +10,7 @@ export interface Resumo {
   sem_septo: number;
   vistorias_7d: number;
   adultos_7d: number;
+  adultos_7d_ant: number;
   adultos_30d: number;
   fotos_total: number;
   fazendas: number;
@@ -34,6 +35,7 @@ export async function resumoDaOrganizacao(org: string): Promise<Resumo> {
        (SELECT count(*) FROM arm WHERE status = 'ativa' AND faixa_septo = 'sem_septo')    AS sem_septo,
        (SELECT count(*) FROM vis WHERE realizada_em >= now() - interval '7 days')         AS vistorias_7d,
        (SELECT COALESCE(sum(adultos),0) FROM vis WHERE realizada_em >= now() - interval '7 days')  AS adultos_7d,
+       (SELECT COALESCE(sum(adultos),0) FROM vis WHERE realizada_em >= now() - interval '14 days' AND realizada_em < now() - interval '7 days') AS adultos_7d_ant,
        (SELECT COALESCE(sum(adultos),0) FROM vis WHERE realizada_em >= now() - interval '30 days') AS adultos_30d,
        (SELECT count(*) FROM foto fo JOIN armadilha a ON a.id = fo.armadilha_id JOIN fazenda f ON f.id = a.fazenda_id WHERE f.organizacao_id = $1) AS fotos_total,
        (SELECT count(*) FROM fazenda WHERE organizacao_id = $1)                            AS fazendas,
@@ -51,6 +53,7 @@ export async function resumoDaOrganizacao(org: string): Promise<Resumo> {
     sem_septo: n("sem_septo"),
     vistorias_7d: n("vistorias_7d"),
     adultos_7d: n("adultos_7d"),
+    adultos_7d_ant: n("adultos_7d_ant"),
     adultos_30d: n("adultos_30d"),
     fotos_total: n("fotos_total"),
     fazendas: n("fazendas"),

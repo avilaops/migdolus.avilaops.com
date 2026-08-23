@@ -28,7 +28,8 @@ interface LinhaProducao {
   producao_id: string | null; tch: string | null; testemunha: boolean | null; fonte: string | null; larvas_media: string | null; trincheiras: number;
 }
 
-const CORES_SAFRA = ["#d32f2f", "#2e9e52", "#1e88e5", "#8e24aa", "#f9a825", "#00897b"];
+// Paleta categórica validada (scripts/validate_palette.js do skill dataviz): CVD ΔE ≥ 19, contraste ≥ 3:1
+const CORES_SAFRA = ["#1f7a3e", "#1e6fb8", "#c47207", "#7b4bb7", "#5b6b62", "#0f1f17"];
 
 export function SafrasClient({ safras, pontos, resumos, podeEditar }: { safras: Safra[]; pontos: PontoCurva[]; resumos: ResumoSafra[]; podeEditar: boolean }) {
   const router = useRouter();

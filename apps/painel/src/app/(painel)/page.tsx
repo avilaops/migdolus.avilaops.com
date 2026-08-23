@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MapPin, TimerReset, Bug, Camera, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { sessaoAtual } from "@/lib/auth";
 import { resumoDaOrganizacao, armadilhasComStatus, vistoriasRecentes, capturasPorSemana } from "@/lib/consultas";
 import { BadgeSepto } from "@/components/Badges";
@@ -45,10 +46,10 @@ export default async function VisaoGeral() {
       )}
 
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Kpi rotulo="Armadilhas ativas" valor={numero(resumo.armadilhas_ativas)} detalhe={`${numero(resumo.armadilhas_planejadas)} planejadas`} />
-        <Kpi rotulo="Septo vencido" valor={numero(resumo.septo_critico)} tom={resumo.septo_critico ? "critico" : "ok"} detalhe={`${numero(resumo.septo_aviso)} trocar em breve`} />
-        <Kpi rotulo="Adultos em 7 dias" valor={numero(resumo.adultos_7d)} detalhe={`${numero(resumo.vistorias_7d)} vistorias`} />
-        <Kpi rotulo="Adultos em 30 dias" valor={numero(resumo.adultos_30d)} detalhe={`${numero(resumo.fotos_total)} fotos auditáveis`} />
+        <Kpi icone={<MapPin size={18} />} rotulo="Armadilhas ativas" valor={numero(resumo.armadilhas_ativas)} detalhe={`${numero(resumo.armadilhas_planejadas)} planejadas`} />
+        <Kpi icone={<TimerReset size={18} />} rotulo="Septo vencido" valor={numero(resumo.septo_critico)} tom={resumo.septo_critico ? "critico" : "ok"} detalhe={`${numero(resumo.septo_aviso)} trocar em breve`} href="/armadilhas?faixa=critico" />
+        <Kpi icone={<Bug size={18} />} rotulo="Adultos em 7 dias" valor={numero(resumo.adultos_7d)} detalhe={`${numero(resumo.vistorias_7d)} vistorias`} delta={variacao(resumo.adultos_7d, resumo.adultos_7d_ant)} />
+        <Kpi icone={<Camera size={18} />} rotulo="Adultos em 30 dias" valor={numero(resumo.adultos_30d)} detalhe={`${numero(resumo.fotos_total)} fotos auditáveis`} />
       </section>
 
       <section className="grid lg:grid-cols-3 gap-6">
@@ -117,15 +118,38 @@ export default async function VisaoGeral() {
   );
 }
 
-function Kpi({ rotulo, valor, detalhe, tom = "neutro" }: { rotulo: string; valor: string; detalhe?: string; tom?: "neutro" | "ok" | "critico" }) {
+// Variação vs. janela anterior. Para praga, subir é ruim: sinal e cor andam juntos.
+function variacao(atual: number, anterior: number): { pct: number; pior: boolean } | undefined {
+  if (!anterior) return undefined;
+  const pct = Math.round(((atual - anterior) / anterior) * 100);
+  if (!Number.isFinite(pct) || pct === 0) return undefined;
+  return { pct, pior: pct > 0 };
+}
+
+function Kpi({ rotulo, valor, detalhe, tom = "neutro", icone, delta, href }: {
+  rotulo: string; valor: string; detalhe?: string; tom?: "neutro" | "ok" | "critico";
+  icone?: React.ReactNode; delta?: { pct: number; pior: boolean }; href?: string;
+}) {
   const cor = tom === "critico" ? "text-critico" : tom === "ok" ? "text-marca" : "";
-  return (
-    <div className="cartao p-5">
-      <p className="rotulo">{rotulo}</p>
-      <p className={`text-3xl font-semibold mt-2 ${cor}`}>{valor}</p>
+  const corIcone = tom === "critico" ? "bg-red-50 text-critico" : "bg-marca-clara text-marca-escura";
+  const corpo = (
+    <div className="cartao p-5 h-full">
+      <div className="flex items-start justify-between gap-2">
+        <p className="rotulo">{rotulo}</p>
+        {icone && <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${corIcone}`}>{icone}</span>}
+      </div>
+      <div className="mt-1 flex items-baseline gap-2">
+        <p className={`text-3xl font-semibold ${cor}`}>{valor}</p>
+        {delta && (
+          <span className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[11px] font-semibold ${delta.pior ? "bg-red-100 text-red-800" : "bg-marca-clara text-marca-escura"}`}>
+            {delta.pior ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}{Math.abs(delta.pct)}%
+          </span>
+        )}
+      </div>
       {detalhe && <p className="text-xs text-texto-suave mt-1">{detalhe}</p>}
     </div>
   );
+  return href ? <Link href={href} className="block h-full">{corpo}</Link> : corpo;
 }
 
 function Vazio({ texto }: { texto: string }) {
