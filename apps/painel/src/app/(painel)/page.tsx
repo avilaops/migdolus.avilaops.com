@@ -4,6 +4,7 @@ import { sessaoAtual } from "@/lib/auth";
 import { resumoDaOrganizacao, armadilhasComStatus, vistoriasRecentes, capturasPorSemana } from "@/lib/consultas";
 import { BadgeSepto } from "@/components/Badges";
 import { GraficoCapturas } from "@/components/GraficoCapturas";
+import { Sparkline } from "@/components/Sparkline";
 import { dataHora, numero } from "@/lib/formatar";
 
 export default async function VisaoGeral() {
@@ -48,7 +49,7 @@ export default async function VisaoGeral() {
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Kpi icone={<MapPin size={18} />} rotulo="Armadilhas ativas" valor={numero(resumo.armadilhas_ativas)} detalhe={`${numero(resumo.armadilhas_planejadas)} planejadas`} />
         <Kpi icone={<TimerReset size={18} />} rotulo="Septo vencido" valor={numero(resumo.septo_critico)} tom={resumo.septo_critico ? "critico" : "ok"} detalhe={`${numero(resumo.septo_aviso)} trocar em breve`} href="/armadilhas?faixa=critico" />
-        <Kpi icone={<Bug size={18} />} rotulo="Adultos em 7 dias" valor={numero(resumo.adultos_7d)} detalhe={`${numero(resumo.vistorias_7d)} vistorias`} delta={variacao(resumo.adultos_7d, resumo.adultos_7d_ant)} />
+        <Kpi icone={<Bug size={18} />} rotulo="Adultos em 7 dias" valor={numero(resumo.adultos_7d)} detalhe={`${numero(resumo.vistorias_7d)} vistorias`} delta={variacao(resumo.adultos_7d, resumo.adultos_7d_ant)} spark={semanas.map((s) => s.adultos)} />
         <Kpi icone={<Camera size={18} />} rotulo="Adultos em 30 dias" valor={numero(resumo.adultos_30d)} detalhe={`${numero(resumo.fotos_total)} fotos auditáveis`} />
       </section>
 
@@ -126,9 +127,9 @@ function variacao(atual: number, anterior: number): { pct: number; pior: boolean
   return { pct, pior: pct > 0 };
 }
 
-function Kpi({ rotulo, valor, detalhe, tom = "neutro", icone, delta, href }: {
+function Kpi({ rotulo, valor, detalhe, tom = "neutro", icone, delta, href, spark }: {
   rotulo: string; valor: string; detalhe?: string; tom?: "neutro" | "ok" | "critico";
-  icone?: React.ReactNode; delta?: { pct: number; pior: boolean }; href?: string;
+  icone?: React.ReactNode; delta?: { pct: number; pior: boolean }; href?: string; spark?: number[];
 }) {
   const cor = tom === "critico" ? "text-critico" : tom === "ok" ? "text-marca" : "";
   const corIcone = tom === "critico" ? "bg-red-50 text-critico" : "bg-marca-clara text-marca-escura";
@@ -147,6 +148,7 @@ function Kpi({ rotulo, valor, detalhe, tom = "neutro", icone, delta, href }: {
         )}
       </div>
       {detalhe && <p className="text-xs text-texto-suave mt-1">{detalhe}</p>}
+      {spark && <div className="mt-2 -mb-1"><Sparkline dados={spark} /></div>}
     </div>
   );
   return href ? <Link href={href} className="block h-full">{corpo}</Link> : corpo;
