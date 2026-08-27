@@ -86,7 +86,7 @@ O Migdolus Monitor resolve os quatro pontos de uma vez:
 
 | Decisão | Escolha | Motivo |
 | --- | --- | --- |
-| Mobile | **Expo / React Native**, Android primeiro, iOS pelo mesmo código | Celular de campo é Android básico; o mesmo repositório gera o build iOS quando houver demanda (agrônomos/gerência) |
+| Mobile | **Expo / React Native**, Android + iPhone desde o piloto (mesmo código, EAS Build) | Celular de campo é Android básico; agrônomos/gerência usam iPhone — cliente confirmou os dois em 27/08/2026 |
 | Mapa offline | **MapLibre GL Native** com tiles MBTiles baixados por fazenda | Livre de custo por visualização, funciona sem rede |
 | Banco local | **SQLite (expo-sqlite)** com fila de sync | Simples, confiável, sem servidor no aparelho |
 | Backend | **Route handlers do Next.js** + `pg` + PostGIS (API dentro do painel) | Um só processo Node no CX23 de 4 GB; extraível para serviço próprio depois |
@@ -95,10 +95,11 @@ O Migdolus Monitor resolve os quatro pontos de uma vez:
 | Hospedagem | Docker no **Hetzner**, Cloudflare só DNS/proxy/CDN/R2 | Padrão do workspace |
 | Automação | **n8n** para alertas de septo, disparo de laudo e follow-up comercial | Padrão do workspace |
 
-> **Pergunta em aberto — Android ou iPhone?** O projeto parte de **Android
-> primeiro** (APK distribuído direto ou Play Store interno), com suporte a
-> iPhone no mesmo código via EAS Build quando for necessário. Se a usina exigir
-> iOS desde o piloto, basta adiantar a etapa 5 do [ROADMAP](ROADMAP.md).
+> **Decidido em 27/08/2026 — Android + iPhone no piloto.** O cliente confirmou
+> que o piloto precisa dos dois. Android sai primeiro (APK distribuído direto ou
+> Play Store interno) e o iOS vem do mesmo código via EAS Build — exige conta
+> Apple Developer e build na nuvem (não há build iOS em Windows). Ver etapa 6 do
+> [ROADMAP](ROADMAP.md).
 
 ## Estrutura do repositório
 

@@ -1,7 +1,7 @@
 # App Campo — Migdolus Monitor (Expo SDK 57 / React Native)
 
-Aplicativo do pragueiro. **Offline-first**, Android primeiro, iOS pelo mesmo
-código (EAS Build). Fala com `https://migdolus.avilaops.com/api`.
+Aplicativo do pragueiro. **Offline-first**, Android + iPhone (cliente confirmou os dois
+em 27/08/2026), mesmo código; iOS via EAS Build. Fala com `https://migdolus.avilaops.com/api`.
 
 ## Estado (21/08/2026)
 

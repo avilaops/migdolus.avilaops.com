@@ -8,7 +8,7 @@
 | **3. Mapa offline + localizador** | Pacote MBTiles por fazenda, mapa no app, bússola/distância até a armadilha | Pragueiro acha armadilha em talhão de 50 ha sem ajuda |
 | **4. Malha cartográfica + heatmap** 🟡 editor, importação, malha e heatmap prontos; falta IDW | Editor de talhões (desenho + importação KML/GeoJSON/SHP), gerador de malha de 30 m para coleta massal, heatmap ponderado, IDW por talhão | Usina sem shapefile monta a fazenda inteira e a malha de armadilhas no navegador |
 | **5. Laudo PDF + alertas n8n** 🟡 laudo imprimível e comparativo de safras prontos; faltam PDF automático e alertas | PDF automático por período, comparativo entre safras, WhatsApp/e-mail de septo vencendo, resumo semanal | Laudo sai sem tocar no Excel; ninguém perde troca de septo |
-| **6. iOS + Play Store** | Build iOS via EAS, publicação interna nas lojas, atualização OTA | Agrônomo com iPhone usa o mesmo app |
+| **6. iOS + Play Store** — entra no piloto (cliente confirmou Android + iPhone em 27/08) | Build iOS via EAS (conta Apple Developer), TestFlight/Play interno, atualização OTA | Agrônomo com iPhone usa o mesmo app |
 | **7. Comercial** | Planos no portal `cliente.avilaops.com`, checkout PayPal/Mercado Pago/Éfi, fluxo de prospecção n8n para usinas e consultorias | Primeira usina pagante fora do piloto |
 
 Piloto sugerido: **1 usina ou consultoria, 2 pragueiros, ~100 armadilhas, uma
