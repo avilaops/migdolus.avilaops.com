@@ -4,5 +4,12 @@ migdolus.avilaops.com {
 	request_body {
 		max_size 20MB
 	}
-	reverse_proxy 127.0.0.1:3070
+	# APK do app de campo — arquivo enviado por scp para /opt/migdolus/apk/migdolus-campo.apk
+	handle_path /apk/* {
+		root * /opt/migdolus/apk
+		file_server
+	}
+	handle {
+		reverse_proxy 127.0.0.1:3070
+	}
 }

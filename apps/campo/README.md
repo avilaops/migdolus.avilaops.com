@@ -3,10 +3,13 @@
 Aplicativo do pragueiro. **Offline-first**, Android + iPhone (cliente confirmou os dois
 em 27/08/2026), mesmo código; iOS via EAS Build. Fala com `https://migdolus.avilaops.com/api`.
 
-## Estado (21/08/2026)
+## Estado (27/08/2026)
 
 Código completo e tipado (`npm run typecheck` limpo, `expo-doctor` 21/21).
-**Ainda não gerou APK** — próximo passo é `npx eas init` + `eas build -p android --profile preview`.
+**APK gerado em 27/08/2026** (build local, `gradlew assembleRelease`, 10 min, 106 MB, arm64-v8a + x86_64,
+versionName 0.1.0): cópia em `dist/migdolus-campo-20260827.apk` (ignorado pelo git) e download em
+`https://migdolus.avilaops.com/apk/migdolus-campo.apk` (Caddy serve `/opt/migdolus/apk/`; enviar por scp).
+Próximo passo: instalar no celular de campo e validar GPS/offline/sync. iOS: `eas build -p ios` (conta Apple Developer).
 
 ## Telas
 
