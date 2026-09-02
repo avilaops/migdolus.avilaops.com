@@ -1,4 +1,4 @@
-# Arquitetura — Migdolus Monitor
+# Arquitetura: Migdolus Monitor
 
 ## Visão geral
 
@@ -21,7 +21,7 @@
                                                           └───────────────────────┘
 ```
 
-## Modelo de dados (resumo — ver `db/schema.sql`)
+## Modelo de dados (resumo: ver `db/schema.sql`)
 
 | Tabela | Papel |
 | --- | --- |
@@ -29,22 +29,22 @@
 | `usuario` | Pragueiro, agrônomo, gestor (papéis) |
 | `fazenda` | Unidade produtiva; limite opcional (`MultiPolygon`) |
 | `talhao` | Subdivisão da fazenda; polígono desenhado no painel ou importado; área em ha |
-| `safra` | Período de monitoramento (ex.: 2026/27) — permite comparar safras como nos resultados da bp |
+| `safra` | Período de monitoramento (ex.: 2026/27), permite comparar safras como nos resultados da bp |
 | `armadilha` | Ponto fixo (`Point, 4326`), código, finalidade (`monitoramento` ou `coleta_massal`), data de instalação, status |
 | `ciclo_feromonio` | Cada septo instalado: `inicio`, `fim_previsto` (+30 d), `trocado_em` |
 | `vistoria` | Visita à armadilha: contagem de adultos, GPS da visita, precisão, foto(s), observações |
 | `foto` | Arquivo no R2, hash, EXIF (lat/lon/hora), carimbo aplicado |
-| `trincheira` | Amostragem de larvas no solo (larvas/trincheira) — indicador de eficácia do controle |
-| `producao_talhao` | TCH por talhão/safra (manual ou importado do ERP) — mede ganho de produtividade |
+| `trincheira` | Amostragem de larvas no solo (larvas/trincheira), indicador de eficácia do controle |
+| `producao_talhao` | TCH por talhão/safra (manual ou importado do ERP), mede ganho de produtividade |
 | `sync_evento` | Log de push por dispositivo (`device_id`, `client_id`, `recebido_em`) |
 
 Regras derivadas (views/materialized views):
 
-- `v_armadilha_status` — dias desde o último septo, faixa (`ok` < 20, `aviso`
+- `v_armadilha_status` - dias desde o último septo, faixa (`ok` < 20, `aviso`
   20–29, `critico` ≥ 30), última contagem, densidade média (adultos/armadilha/dia).
-- `v_talhao_indicadores` — média, máximo, total de capturas e nível de infestação
+- `v_talhao_indicadores` - média, máximo, total de capturas e nível de infestação
   por período; alimenta o heatmap e o laudo.
-- `v_safra_comparativo` — machos/armadilha por mês e por safra (curva de revoada
+- `v_safra_comparativo` - machos/armadilha por mês e por safra (curva de revoada
   Nov–Mai), queda percentual entre safras, larvas/trincheira e TCH.
 
 ## Sincronização offline-first
@@ -57,7 +57,7 @@ Regras derivadas (views/materialized views):
 4. `GET /sync/pull?since=<cursor>` devolve só o que mudou desde o último cursor
    (armadilhas de outros pragueiros, talhões novos, ajustes do escritório).
 5. Conflito: **última escrita vence por campo**, exceto contagem de vistoria,
-   que nunca é sobrescrita — uma vistoria é imutável depois de enviada
+   que nunca é sobrescrita, uma vistoria é imutável depois de enviada
    (correções geram nova vistoria com `corrige_vistoria_id`).
 6. Fotos: upload direto para o R2 com URL assinada emitida pela API; a vistoria
    referencia o `object_key` e só é marcada `completa` após o upload.
@@ -80,7 +80,7 @@ as mais eficientes por área. O painel gera a malha automaticamente:
 3. o sistema gera os pontos (`ST_GeneratePoints`/grade regular recortada pelo
    polígono), numera sequencialmente e envia para o app como "armadilhas a
    instalar";
-4. no campo, o pragueiro instala e confirma cada ponto com o GPS real — a malha
+4. no campo, o pragueiro instala e confirma cada ponto com o GPS real, a malha
    planejada vira malha instalada.
 
 ## Mapa offline

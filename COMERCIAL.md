@@ -1,4 +1,4 @@
-# Comercial — Migdolus Monitor
+# Comercial: Migdolus Monitor
 
 ## Cliente
 
@@ -19,7 +19,7 @@
 
 Tradução para o cliente: o programa de coleta massal **dobra a produtividade**
 do talhão atacado, mas só funciona se for mantido por três safras com a malha
-certa e o feromônio sempre ativo — exatamente o que o sistema garante
+certa e o feromônio sempre ativo, exatamente o que o sistema garante
 (malha de 30 m gerada automaticamente, alerta de troca de septo, comparativo
 entre safras para provar o resultado).
 
@@ -31,22 +31,22 @@ entre safras para provar o resultado).
 | Usuários de campo | 2 | 10 | ilimitados |
 | Fazendas | 1 | 10 | ilimitadas |
 | App offline + GPS | ✔ | ✔ | ✔ |
-| Contador de septo + alertas WhatsApp | — | ✔ | ✔ |
+| Contador de septo + alertas WhatsApp | - | ✔ | ✔ |
 | Mapa de calor + IDW | básico (pontos) | ✔ | ✔ |
-| Editor de talhões / malha de 30 m / importação SHP | — | ✔ | ✔ |
-| Comparativo entre safras (capturas, larvas, TCH) | — | ✔ | ✔ |
-| Laudo PDF automático | — | ✔ | ✔ + marca branca |
-| Integração (API / n8n / ERP da usina) | — | — | ✔ |
+| Editor de talhões / malha de 30 m / importação SHP | - | ✔ | ✔ |
+| Comparativo entre safras (capturas, larvas, TCH) | - | ✔ | ✔ |
+| Laudo PDF automático | - | ✔ | ✔ + marca branca |
+| Integração (API / n8n / ERP da usina) | - | - | ✔ |
 | Suporte | e-mail | WhatsApp comercial | gerente dedicado + SLA |
 | Preço sugerido | R$ 390/mês | **R$ 1.490/mês** | R$ 6.900/mês |
 
-Pagamento pelos três gateways do workspace: **PayPal, Mercado Pago e Éfi**.
+Pagamento pelo gateway oficial do workspace: **Mercado Pago**.
 
 ## Diferenciais a destacar na venda
 
-1. Funciona **sem mapa prévio** — a malha nasce do GPS do próprio pragueiro.
-2. **Nenhuma troca de septo esquecida** — o alerta chega no WhatsApp do responsável.
-3. **Laudo com foto georreferenciada** — a usina audita sem ir a campo.
+1. Funciona **sem mapa prévio**, a malha nasce do GPS do próprio pragueiro.
+2. **Nenhuma troca de septo esquecida**, o alerta chega no WhatsApp do responsável.
+3. **Laudo com foto georreferenciada**, a usina audita sem ir a campo.
 4. **Do caderno ao mapa de calor no mesmo dia**, sem Excel.
 5. **Prova o retorno**: comparativo safra a safra com os mesmos indicadores da
    pesquisa (machos/armadilha, larvas/trincheira, TCH).

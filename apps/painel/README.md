@@ -1,8 +1,8 @@
-# Painel + API — Migdolus Monitor (Next.js 16, standalone)
+# Painel + API: Migdolus Monitor (Next.js 16, standalone)
 
 Em produção em **https://migdolus.avilaops.com** (container `migdolus-painel`,
 Hetzner, porta 3070 atrás do Caddy). A **API do app de campo vive aqui**, em
-`src/app/api/*` (route handlers) — um único processo Node para poupar RAM no CX23.
+`src/app/api/*` (route handlers), um único processo Node para poupar RAM no CX23.
 
 ## Páginas
 
@@ -18,7 +18,7 @@ Hetzner, porta 3070 atrás do Caddy). A **API do app de campo vive aqui**, em
 | `/talhoes` | Fazendas e talhões: **desenhar polígono no mapa** ou **importar GeoJSON/KML**, área em ha, **gerar malha de armadilhas** (30 m, `gerar_malha()` no PostGIS) → pontos `planejados` que aparecem no app |
 | `/configuracoes` | Parâmetros agronômicos (dias do septo, aviso, malha, faixas), usuários (criar, ativar/desativar, redefinir senha), instruções do app |
 
-UI: shadcn (estilo base-nova / Base UI) com tokens da marca — Sidebar
+UI: shadcn (estilo base-nova / Base UI) com tokens da marca, Sidebar
 colapsável, Card, Table, Dialog, Tabs, Select, Switch, Sonner. Componentes do
 21st.dev ficam para quando a cota da conta liberar (ver Todoist).
 
@@ -53,7 +53,7 @@ npm install && npm run dev
 
 ## Deploy
 
-`../../deploy/deploy.sh` — build local da imagem (`output: standalone`),
+`../../deploy/deploy.sh` - build local da imagem (`output: standalone`),
 `docker save | ssh docker load`, `docker compose up -d`, bloco do Caddy.
 O container usa `network_mode: bridge` para enxergar o Postgres do host em
 `172.17.0.1`.

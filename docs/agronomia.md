@@ -1,11 +1,11 @@
-# Referência agronômica — *Migdolus fryanus*
+# Referência agronômica: *Migdolus fryanus*
 
 ## A praga
 
 - **Broca-gigante da cana-de-açúcar** (*Migdolus fryanus*, Coleoptera:
   Vesperidae). Larvas de solo atacam rizomas e raízes, provocando falhas,
   tombamento e perda de longevidade do canavial.
-- **Ciclo de vida longo (~3 anos)** — por isso o controle precisa ser mantido por
+- **Ciclo de vida longo (~3 anos)**: por isso o controle precisa ser mantido por
   3 anos ininterruptos para quebrar a população.
 - **Revoada de adultos:** novembro a maio, com pico em **março–abril** (dados
   bp bioenergy, safra 21/22: 97 em dez → 135 jan → 373 fev → **1.167 mar** →
@@ -16,7 +16,7 @@
 - **Armadilha:** feromônio sexual sintético (atrai machos) sobre bacia com água
   + detergente/óleo, instalada ao nível do solo.
 - **Septo de feromônio:** vida útil típica de **30 dias** em campo (alguns
-  fabricantes indicam 45); perda de atratividade gradual — daí o aviso aos 20 e
+  fabricantes indicam 45); perda de atratividade gradual, daí o aviso aos 20 e
   o crítico aos 30 dias.
 - **Espaçamento:** armadilhas **a 30 m** foram as mais eficientes na captura
   por área (bp bioenergy). Para monitoramento simples usa-se malha mais aberta
@@ -25,7 +25,7 @@
 - **Trincheiras:** amostragem de larvas no solo (larvas/trincheira) para
   confirmar a redução da população imatura.
 
-## Resultados de referência — bp bioenergy, coleta massal, 3 safras (21/22 → 23/24)
+## Resultados de referência: bp bioenergy, coleta massal, 3 safras (21/22 → 23/24)
 
 | Indicador | Antes | Depois | Variação |
 | --- | --- | --- | --- |
@@ -60,4 +60,4 @@ delimitação de reboleiras, priorização de reforma, comprovação de resultad
 para a diretoria da usina e para o fornecedor de cana.
 
 > Parâmetros (dias do septo, faixas de captura, espaçamento da malha, densidade)
-> são configuráveis por organização — cada usina segue seu protocolo.
+> são configuráveis por organização, cada usina segue seu protocolo.

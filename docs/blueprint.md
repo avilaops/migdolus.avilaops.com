@@ -1,4 +1,4 @@
-# Blueprint do cliente — v2 (GPS nativo + contador de dias)
+# Blueprint do cliente: v2 (GPS nativo + contador de dias)
 
 > Texto recebido em 21/08/2026, preservado como referência de origem.
 

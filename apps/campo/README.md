@@ -1,4 +1,4 @@
-# App Campo — Migdolus Monitor (Expo SDK 57 / React Native)
+# App Campo: Migdolus Monitor (Expo SDK 57 / React Native)
 
 Aplicativo do pragueiro. **Offline-first**, Android + iPhone (cliente confirmou os dois
 em 27/08/2026), mesmo código; iOS via EAS Build. Fala com `https://migdolus.avilaops.com/api`.
@@ -22,18 +22,18 @@ Próximo passo: instalar no celular de campo e validar GPS/offline/sync. iOS: `e
 | `armadilha/nova` | Instalar: GPS automático (aguarda ≤ 10 m por 15 s), fazenda/talhão, código sugerido, finalidade, lote do septo, foto carimbada; ou **confirmar ponto planejado** (`?planejada=<id>`) |
 | `armadilha/[id]` | Localizador (distância + seta de rumo), última contagem, dias do septo, histórico, galeria de fotos, abrir no app de mapas |
 | `vistoria/[armadilhaId]` | Teclado numérico, densidade adultos/armadilha/dia, toggle de troca de septo (sugerido quando vencendo), observações, foto da bacia com carimbo |
-| `trincheira/nova` | Larvas por trincheira (talhão, contagem, GPS opcional) — sobe no mesmo lote de sync |
+| `trincheira/nova` | Larvas por trincheira (talhão, contagem, GPS opcional), sobe no mesmo lote de sync |
 
 Recursos sem tela: **avisos locais** de troca de septo (20/30 dias, agrupados por dia, reagendados a cada sync) e **mapa offline por fazenda**.
 
 ## Como funciona por dentro
 
-- `src/db.ts` — SQLite (`expo-sqlite`): `fazenda`, `talhao`, `armadilha`, `ciclo`, `vistoria`, `foto`, `outbox`, `config`. Toda escrita enfileira no `outbox`.
-- `src/sync.ts` — `POST /sync/push` (lote idempotente por `client_id`), upload de fotos multipart, `GET /sync/pull?since=` incremental; alteração local pendente vence sobre o pull.
-- `src/gps.ts` — `watchPosition` até precisão alvo; haversine e rumo para o localizador.
-- `src/foto.tsx` — `expo-camera` + `react-native-view-shot`: o carimbo (código, data/hora, coordenadas, precisão) é gravado **na imagem**.
-- `src/api.ts` — fetch com Bearer, refresh automático em 401.
-- `src/sessao.tsx` — contexto de login; `device_id` estável por aparelho.
+- `src/db.ts` - SQLite (`expo-sqlite`): `fazenda`, `talhao`, `armadilha`, `ciclo`, `vistoria`, `foto`, `outbox`, `config`. Toda escrita enfileira no `outbox`.
+- `src/sync.ts` - `POST /sync/push` (lote idempotente por `client_id`), upload de fotos multipart, `GET /sync/pull?since=` incremental; alteração local pendente vence sobre o pull.
+- `src/gps.ts` - `watchPosition` até precisão alvo; haversine e rumo para o localizador.
+- `src/foto.tsx` - `expo-camera` + `react-native-view-shot`: o carimbo (código, data/hora, coordenadas, precisão) é gravado **na imagem**.
+- `src/api.ts` - fetch com Bearer, refresh automático em 401.
+- `src/sessao.tsx` - contexto de login; `device_id` estável por aparelho.
 
 ## Rodar
 
@@ -45,7 +45,7 @@ npm run typecheck
 
 ## Build de campo (APK)
 
-**Local (sem EAS), como foi feito em 21/08/2026** — máquina Windows com Android SDK em
+**Local (sem EAS), como foi feito em 21/08/2026**, máquina Windows com Android SDK em
 `C:\devndroid-sdk` e JDK 17 em `C:\dev\jdk17`:
 
 ```bash
@@ -56,10 +56,10 @@ cd C:\mcndroid && gradlew.bat assembleRelease --no-daemon
 # APK: android/app/build/outputs/apk/release/app-release.apk
 ```
 
-Ajustes já feitos em `android/gradle.properties` (gerado pelo prebuild — refazer após novo prebuild):
+Ajustes já feitos em `android/gradle.properties` (gerado pelo prebuild, refazer após novo prebuild):
 `org.gradle.jvmargs=-Xmx1280m` (8 GB de RAM), `org.gradle.parallel=false`, `org.gradle.workers.max=2`,
 `reactNativeArchitectures=arm64-v8a,x86_64` (campo + emulador; omite armeabi-v7a/x86).
-O MapLibre não roda no Expo Go — precisa deste build (ou `npx expo run:android`).
+O MapLibre não roda no Expo Go, precisa deste build (ou `npx expo run:android`).
 
 **EAS (nuvem)**: `npx eas init` + `eas build -p android --profile preview` (`eas.json` já tem
 `preview` = APK interno e `production` = AAB). Precisa de `eas login` interativo.
