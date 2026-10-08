@@ -11,7 +11,19 @@ IMG=migdolus-painel:latest
 
 if [ "${1:-}" != "--no-build" ]; then
   echo "▶ build da imagem ($IMG)"
-  docker build --platform linux/amd64 -t "$IMG" "$AQUI/apps/painel"
+  # No servidor dos agentes (creators, 4 GB) existe o `build-pesado`: uma trava
+  # única para build pesado e um teto de heap no Node. Onde ele existe, o build
+  # passa por ele e o teto entra na imagem por --build-arg (o ambiente de quem
+  # chama não entra no `docker build`). Em qualquer outra máquina as duas listas
+  # ficam vazias e o comando é o `docker build` de sempre. Se a trava não soltar
+  # no prazo, o build-pesado sai com 75 e nada é enviado.
+  PESADO=()
+  TETO=()
+  if command -v build-pesado >/dev/null 2>&1; then
+    PESADO=(build-pesado)
+    TETO=(--build-arg "NODE_OPTIONS=--max-old-space-size=${BUILD_PESADO_HEAP_MB:-1024}")
+  fi
+  ${PESADO[@]+"${PESADO[@]}"} docker build ${TETO[@]+"${TETO[@]}"} --platform linux/amd64 -t "$IMG" "$AQUI/apps/painel"
 fi
 
 echo "▶ enviando imagem para o servidor"

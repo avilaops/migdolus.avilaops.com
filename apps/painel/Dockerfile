@@ -14,6 +14,11 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Teto de heap opcional para o build, por `--build-arg NODE_OPTIONS=...`. Quem
+# constrói no servidor dos agentes (deploy/deploy.sh) passa; sem o argumento a
+# variável fica vazia e o Node usa o padrão dele. Fica só neste estágio.
+ARG NODE_OPTIONS
+ENV NODE_OPTIONS=$NODE_OPTIONS
 RUN npm run build
 
 FROM base AS runner
