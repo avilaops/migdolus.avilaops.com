@@ -22,6 +22,11 @@ if [ "${1:-}" != "--no-build" ]; then
   if command -v build-pesado >/dev/null 2>&1; then
     PESADO=(build-pesado)
     TETO=(--build-arg "NODE_OPTIONS=--max-old-space-size=${BUILD_PESADO_HEAP_MB:-1024}")
+  # Wrapper instalado mas fora do PATH de quem chamou: só avisa, o build segue
+  # como em qualquer outra máquina. Em laptop e no Actions não há wrapper nem
+  # trava, então não aparece nada.
+  elif [ -x /usr/local/bin/build-pesado ] || [ -e /var/lock/build-pesado.lock ]; then
+    echo "aviso: build-pesado existe nesta máquina mas não está no PATH ($PATH); o build vai sem trava e sem teto de memória." >&2
   fi
   ${PESADO[@]+"${PESADO[@]}"} docker build ${TETO[@]+"${TETO[@]}"} --platform linux/amd64 -t "$IMG" "$AQUI/apps/painel"
 fi
